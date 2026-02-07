@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Istuti ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  background:#f5efe6;
+  font-family:'Poppins',sans-serif;
+  color:#ff6fa5;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+.cute{font-family:'Pacifico',cursive;}
+
+.page{display:none;padding:40px;min-height:100vh;}
+.active{display:block;}
+
+button{
+  padding:15px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:15px;
+  margin:10px;
+  background:#ff8fb1;
+  color:white;
+  cursor:pointer;
+}
+
+input{
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px;
+}
+
+.hearts{position:fixed;width:100%;height:100%;top:0;left:0;pointer-events:none;}
+.heart{position:absolute;color:pink;font-size:20px;animation:float 6s linear infinite;}
+@keyframes float{from{transform:translateY(100vh);}to{transform:translateY(-10vh);}}
+
+#loadingBar{
+ width:0%;
+ height:8px;
+ background:#ff6fa5;
+ margin-top:20px;
+ transition:3s;
+}
+
+#loveRain div{
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=romantic-piano-ambient-110110.mp3" type="audio/mp3">
+</audio>
+
+<div class="hearts" id="hearts"></div>
+
+<!-- PASSWORD -->
+<div class="page active" id="pass">
+<h2 class="cute">Only Istuti can open this 💌</h2>
+<input id="pw" placeholder="enter secret word">
+<br><br>
+<button onclick="check()">Open</button>
+<p id="wrong"></p>
+</div>
+
+<!-- LOADING -->
+<div class="page" id="loading">
+<h2 class="cute">Preparing something special...</h2>
+<div style="width:60%;margin:auto;background:#ddd;border-radius:10px;">
+<div id="loadingBar"></div>
+</div>
+</div>
+
+<!-- FIRST -->
+<div class="page" id="page1">
+<h1 class="cute">Istuti this is for you 💌</h1>
+<button onclick="start()">▶ Play</button>
+</div>
+
+<!-- LETTER -->
+<div class="page" id="page2">
+<h2 class="cute">My Letter</h2>
+<p>
+This will be our second Valentine together and many more to go.<br><br>
+No matter how much we fight, we stay together.<br><br>
+Right now we can't go on dates but some years later we will.<br><br>
+I love you alot.<br><br>
+— Yours, Teddy &lt;3
+</p>
+<button onclick="next('page3')">Next</button>
+</div>
+
+<!-- REASONS -->
+<div class="page" id="page3">
+<h2 class="cute">10 Reasons Why I Love You</h2>
+<p>
+1. your eyes<br>
+2. your smile<br>
+3. your way of expressing love<br>
+4. you understand me<br>
+5. you handle me<br>
+6. your pink juicy lips 😌<br>
+7. your touch<br>
+8. your everything<br>
+9. because you are YOU<br>
+10. 10 reasons aren't enough 👉👈
+</p>
+<button onclick="next('page4')">Next</button>
+</div>
+
+<!-- QUESTION -->
+<div class="page" id="page4">
+<h2 class="cute" id="qtext">Will you be my Valentine 👉👈</h2>
+<button id="yes" onclick="yes()">Yes</button>
+<button id="no" onclick="no()">No</button>
+</div>
+
+<!-- FINAL -->
+<div class="page" id="final">
+<h1 class="cute">I LOVEEE YOUUU MY VALENTINE ❤️</h1>
+<div id="loveRain"></div>
+</div>
+
+<script>
+const PASSWORD="paneer loves rajma";
+
+function check(){
+ let v=document.getElementById("pw").value.toLowerCase().trim();
+ if(v===PASSWORD){
+  next("loading");
+  setTimeout(()=>{document.getElementById("loadingBar").style.width="100%";},100);
+  setTimeout(()=>{next("page1");},3000);
+ }else{
+  document.getElementById("wrong").innerText="hmm try again 👀";
+ }
+}
+
+function start(){
+ let m=document.getElementById("music");
+ m.play();
+ hearts();
+ next("page2");
+}
+
+function next(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+}
+
+function hearts(){
+ setInterval(()=>{
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"%";
+  document.getElementById("hearts").appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+ },300);
+}
+
+let noCount=0;
+function no(){
+ noCount++;
+ let q=document.getElementById("qtext");
+ let yes=document.getElementById("yes");
+ let noBtn=document.getElementById("no");
+
+ const texts=[
+ "dont you love me",
+ "how can you do this to me",
+ "you dont love paneer",
+ "are you sure",
+ "SOCHLE BETA"
+ ];
+
+ if(noCount<=texts.length){
+  q.innerText=texts[noCount-1];
+  yes.style.transform=`scale(${1+noCount*0.25})`;
+  let shrink=1-noCount*0.1;
+  if(shrink<0.7) shrink=0.7;
+  noBtn.style.transform=`scale(${shrink})`;
+ }else{
+  yes.innerText="Yes";
+  noBtn.innerText="Yes";
+  yes.style.transform="scale(1.2)";
+  noBtn.style.transform="scale(1.2)";
+ }
+}
+
+function yes(){
+ next("final");
+
+ // SCROLL FIX
+ document.body.style.overflowY="auto";
+
+ for(let i=0;i<2306;i++){
+  let t=document.createElement("div");
+  t.innerHTML="I loveee youuu ❤️";
+  document.getElementById("loveRain").appendChild(t);
+ }
+}
+</script>
+
+</body>
+</html>
